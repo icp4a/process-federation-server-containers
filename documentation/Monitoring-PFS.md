@@ -4,30 +4,17 @@ You can monitor a running server to gather information, detect issues, and perfo
 
 ## Accessing the Process Federation Server MBeans
 
-[JMX Mbeans](https://www.ibm.com/docs/en/baw/20.x?topic=server-monitoring-administering-process-federation) are deployed with Process Federation Server to monitor and perform administrative tasks for Process Federation Server servers.
+[JMX Mbeans](https://www.ibm.com/docs/en/baw/22.x?topic=server-monitoring-administering-process-federation) are deployed with Process Federation Server to monitor and perform administrative tasks for Process Federation Server servers.
 
 The MBeans execution must be performed on a given pod. As a Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) is created to expose all the pods of the Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), if you have more than one replica in your Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), this [service](https://kubernetes.io/docs/concepts/services-networking/service/) cannot be used to access the MBeans. Instead, you must open a terminal on a Process Federation Server pod, and then access the MBean on `localhost`.
 
-You can open a terminal on a container running within a pod from the Console UI of your Openshift cluster, or using CLI:
+You can open a terminal on a container running within a Process Federation Server pod from the Console UI of your Openshift cluster, or using CLI:
 
 ```
-kubectl exec -it <pod-name> -- bash
+kubectl exec -it <icp4acluster-instance-name>-pfs-0 -- bash
 ```
 
-To then access the MBeans, you must first declare at least a user in a basic registry, and provide this user with `administrator-role`. To do so, create a [configuration dropin](https://www.ibm.com/docs/en/was-liberty/core?topic=files-using-configuration-dropins-folder-specify-server-configuration) such as the following one, and package it in a [secret](https://kubernetes.io/fr/docs/concepts/configuration/secret/) referenced as [pfs_configuration.config_dropins_overrides_secret](https://www.ibm.com/docs/en/baw/20.x?topic=workflow-business-automation-server-parameters#ref_baw_params__pfs) Custom Resource (CR) value.
-
-For example:
-
-```
-<server description="IBM Process Federation Server">
-    <basicRegistry realm="localBasicRealm">
-        <user name="uid=mbeanadmin,o=localBasicRealm" password="passw0rd"/>
-    </basicRegistry>
-    <administrator-role>
-        <user>uid=mbeanadmin,o=localBasicRealm</user>
-    </administrator-role>
-</server>
-```
+A pre requisite to access the MBeans is to have at least one user with the `administrator-role` authorization. [Specifying Process Federation Server user authorizations on Kubernetes](./Authorizations.md) provides detailed instructions on how to do that.
 
 You can then access the MBeans using Curl or using the admin scripts which are located in the `/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/adminScripts` directory on the running pod.
 
@@ -44,8 +31,8 @@ Here is an example of the options file that will be passed as argument :
 ```
 host=localhost
 port=9443
-user=uid=mbeanadmin,o=localBasicRealm
-password=passw0rd
+user=<id_of_the_administrator_user>
+password=<password_of_the_administrator_user>
 trustStoreFile=/opt/ibm/wlp/usr/servers/defaultServer/resources/generated_security/truststore/jks/trusts.jks
 trustStoreType=JKS
 trustStorePassword=passw0rd
