@@ -5,8 +5,8 @@ When Process Federation Server is installed as part of the ICP4ACluster Custom R
 ## Default authorizations for Process Federation Server users
 
 The following attributes of the IBM® Cloud Pak for Business Automation Custom Resource define the administrator or the group of administrators to be used by the operator when setting the default authorizations:
-* [pfs_configuration.admin_user_id](https://www.ibm.com/docs/en/baw/20.x?topic=workflow-business-automation-server-parameters#ref_baw_params__pfs): id(s) of the administrator user(s)
-* [pfs_configuration.admin_group_id](https://www.ibm.com/docs/en/baw/20.x?topic=workflow-business-automation-server-parameters#ref_baw_params__pfs): id(s) of the administrator group(s)
+* [pfs_configuration.admin_user_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver): id(s) of the administrator user(s)
+* [pfs_configuration.admin_group_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver): id(s) of the administrator group(s)
 
 These values are optional, consequently, by default there are no predefined administrator users or groups.
 See [Mapping management roles for Liberty](https://www.ibm.com/docs/en/was-liberty/core?topic=liberty-mapping-management-roles)
@@ -15,23 +15,22 @@ The following table lists the default authorizations that are sets for Process F
 
 | Roles      | Users and groups |
 | :---       | :---             |
-| `administrator` | Admin users and/or the admin groupos if they are defined in the Custom Resource |
+| `administrator` | Admin users and/or the admin groups if they are defined in the Custom Resource |
 | `restrictedBpmuser` | None |
 | `bpmuser` | All authenticated users |
 | `createSharedSavedSearch` | All authenticated users |
-| `adminSavedSearch` | Admin users and/or the admin groupos if they are defined in the Custom Resource |
-| `adminSharedSavedSearch` | Admin users and/or the admin groupos if they are defined in the Custom Resource |
+| `adminSavedSearch` | Admin users and/or the admin groups if they are defined in the Custom Resource |
+| `adminSharedSavedSearch` | Admin users and/or the admin groups if they are defined in the Custom Resource |
 | `doNotCreateSavedSearch` | None |
 
-For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/20.x?topic=portal-federated-systems-authorization-saved-searches).
+For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/22.x?topic=portal-federated-systems-authorization-saved-searches).
 
 ## Defining your own set of authorizations
 
-The syntax to reference a group or a user in authorizations differs depending on whether you installed a stand-alone IBM Business Automation Workflow or IBM Cloud Pak for Business Automation:
+The syntax to reference a group or a user in authorizations differs depending on your deployment of Process Federation Server containers:
 
-* For stand-alone IBM Business Automation Workflow on containers, the syntax is `access-id="user:o=defaultWIMFileBasedRealm/USER_ID"` and `access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"` as currently documented.
-* For version 21.0.3 of IBM Cloud Pak for Business Automation the syntax is `access-id="user:jwtrealm/USER_ID"` and `access-id="group:jwtrealm/GROUP_ID"`.
-* For version 21.0.2 and earlier of IBM Cloud Pak for Business Automation, the syntax is `access-id="user:o=defaultWIMFileBasedRealm/USER_ID"` and `access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"` as currently documented.
+* For a deployment on OpenShift with Portal UI enabled, the syntax is `access-id="user:jwtrealm/USER_ID"` and `access-id="group:jwtrealm/GROUP_ID"`.
+* For others deployments using UMS, the syntax is `access-id="user:o=defaultWIMFileBasedRealm/USER_ID"` and `access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"`.
 
 Use the following procedure if you need to set up your own set of authorizations:
 
@@ -75,7 +74,7 @@ stringData:
     </authorization-roles>
   </server>
   ```
-  For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/20.x?topic=portal-federated-systems-authorization-saved-searches).
+  For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/22.x?topic=portal-federated-systems-authorization-saved-searches).
 
 * To reference a user in the .xml file, and assign this user a role, use one of the following syntaxes:
 
@@ -99,7 +98,7 @@ stringData:
   <group name="GROUP_NAME" access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"/>
   ```
 
-  where `GROUP_NAME` and `GROUP_ID` are respectively the user's name and identifier.
+  where `GROUP_NAME` and `GROUP_ID` are respectively the group's name and identifier.
 
 * You can also use `<special-subject type="ALL_AUTHENTICATED_USERS"/>` entries to assign a role to all Process Federation Server users.
 

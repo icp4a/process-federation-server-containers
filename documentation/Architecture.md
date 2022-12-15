@@ -8,7 +8,7 @@ When Process Federation Server is deployed using an ICP4ACluster Custom Resource
 
 * **[Using Elasticsearch when running Process Federation Server with IBM Cloud Pak for Business Automation](./Using-Elasticsearch.md)**
 
-    Process Federation Server uses a [remote Elasticsearch service](https://www.ibm.com/docs/en/baw/20.x?topic=service-configuring-remote-elasticsearch) to store data.
+    Process Federation Server uses a [remote Elasticsearch service](https://www.ibm.com/docs/en/baw/22.x?topic=service-configuring-remote-elasticsearch) to store data.
 
 
 ---

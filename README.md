@@ -2,13 +2,13 @@
 
 IBM® Process Federation Server is a component for IBM Business Automation Workflow (BAW) and IBM Business Process Manager (BPM) environments. This component creates a federated process environment that provides business users with a single point of access to their task list and launch list, regardless of the type of process that they are working on and the BAW and / or BPM back-end system on which the process artifacts are stored.
 
-When IBM Business Automation Workflow traditional offering is deployed on-premises, IBM Process Federation Server is an optional component that is extensively documented in the [IBM Business Automation Workflow Knowledge Center](https://www.ibm.com/docs/en/baw/20.x?topic=server-traditional-installing-enabling-process-federation).
+When IBM Business Automation Workflow traditional offering is deployed on-premises, IBM Process Federation Server is an optional component that is extensively documented in the [IBM Business Automation Workflow Knowledge Center](https://www.ibm.com/docs/en/baw/22.x?topic=server-traditional-installing-enabling-process-federation).
 
 When IBM Business Automation Workflow containers are deployed on [Red Hat Openshift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift/container-platform) or other [CNCF Kubernetes platforms](https://www.cncf.io/projects/kubernetes/), Process Federation Server containers are also automatically deployed in order to provide a federated process environment that can be configured to federate on-premises Business Automation Workflow systems (V18.0.0.1 or later) with the Business Automation Workflow containers runtimes.
 
 For information about installing Business Automation Workflow on containers, see:
-* for stand-alone IBM Business Automation Workflow on containers: [Containers: Installing IBM Business Automation Workflow](https://www.ibm.com/docs/en/SS8JB4_20.x/com.ibm.wbpm.imuc.container.doc/topics/con_baw_inst.html);
-* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing IBM Cloud Pak for Business Automation](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/21.0.x?topic=automation-installing)
+* for stand-alone IBM Business Automation Workflow on containers: [Containers: Installing, configuring, and migrating IBM Business Automation Workflow](https://www.ibm.com/docs/en/baw/22.x?topic=2201-containers-installing-business-automation-workflow);
+* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing IBM Cloud Pak for Business Automation](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=automation-installing)
 
 The instructions for stand-alone IBM Business Automation Workflow on containers are similar to the instructions for the Business Automation Workflow Server (or Workflow Runtime) in the IBM Cloud Pak for Business Automation, and they both involve the creation of a Custom Resource of the ICP4ACluster kind. This Custom Resource is referenced as the _ICP4ACluster Custom Resource_ in this Process Federation Server containers documentation.
 
@@ -35,7 +35,7 @@ Since IBM® Cloud Pak for Business Automation (CP4BA) 22.0.1, Process Federation
 
     * **[Deploying Elasticsearch as part of the stand-alone IBM Business Automation Workflow on containers deployment](./documentation/Using-standalone-BAW-Elasticsearch.md)**
 
-        When deploying stand-alone IBM Business Automation Workflow on containers on Intel architectures (AMD64 or x86_64 the 64-bit edition for Linux x86), by default the ICP4ACluster Custom Resource is configured to create a statefulset, <icp4acluster-instance-name>-elasticsearch-statefulset, that deploys pods running Elasticsearch. This option is not supported on IBM Z (s390x) architectures. This section provide information about using this type of Elasticsearch cluster.
+        When deploying stand-alone IBM Business Automation Workflow on containers on AMD64 architectures, by default the ICP4ACluster Custom Resource is configured to create a statefulset, `<icp4acluster-instance-name>-elasticsearch-statefulset`, that deploys pods running Elasticsearch. This option is not supported on other architectures. This section provide information about using this type of Elasticsearch cluster.
 
     * **[Referencing your own Elasticsearch](./documentation/Using-own-Elasticsearch.md)**
 
@@ -53,9 +53,9 @@ Since IBM® Cloud Pak for Business Automation (CP4BA) 22.0.1, Process Federation
 
   The case management tools provide support for indexing case instances in the Elasticsearch index. Full reindexing and live index updates are supported. This section provides detailed information about that.
 
-* **[Migrating saved searches from Elasticsearch 6 to Elasticsearch 7](./documentation/Migrating-from-ES6-to-ES7.md)**
+* **[Migrating saved searches to a new Elasticsearch cluster](./documentation/Migrating-Saved-Searches.md)**
 
-  In Process Federation Server V20.0.0.2, using an external Elasticsearch 6.x cluster is no longer supported. Instead, an external Elasticsearch 7.x (from 7.8.0) cluster is set up (see Elasticsearch product end of life dates at https://www.elastic.co/support/eol). This section provides detailed information about that.
+  Process Federation Server Containers stores federated saved searches in an Elasticsearch index. To migrate from one Elasticsearch cluster to another, you need to migrate existing saved searches. This section provides detailed information about that.
 
 * **[Maintaining, monitoring and troubleshooting IBM Process Federation Server in a container environment](./documentation/Maintaining-monitoring-and-troubleshooting.md)**
 

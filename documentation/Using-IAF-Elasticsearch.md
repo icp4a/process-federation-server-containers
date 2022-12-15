@@ -6,9 +6,9 @@ For more information, see [IBM Automation Foundation operational data store](htt
 
 IBM Automation Foundation will deploy a [statefulset](https://kubernetes.io/fr/docs/concepts/workloads/controllers/statefulset/) named `iaf-system-elasticsearch-es-data` with the following number of replicas:
 
-* 1 replica if `spec.shared_configuration.sc_deployment_type` property of the ICP4ACluster Custom Resource is set to "Starter" or "demo"; or if `spec.shared_configuration.sc_deployment_profile_size` is set to "small" or "medium";
+* 1 replica if `spec.shared_configuration.sc_deployment_type` property of the ICP4ACluster Custom Resource is set to "starter" or if `spec.shared_configuration.sc_deployment_profile_size` is set to "small" or "medium";
 
-* 3 replicas if `spec.shared_configuration.sc_deployment_type` property of the ICP4ACluster Custom Resource is set to "Production"  or "enterprise".
+* 3 replicas if `spec.shared_configuration.sc_deployment_type` property of the ICP4ACluster Custom Resource is set to "production" and `spec.shared_configuration.sc_deployment_profile_size` is set to "large".
 
 ## Accessing the Elasticsearch cluster REST API
 
@@ -19,14 +19,14 @@ oc get cartridgerequirements icp4ba -o yaml
 ```
 
 Elasticsearch access information is in the returned content:
-* `Status.Components.Elasticsearch.Endpoints.Uri` (where scope is `External`)
-* `Status.Components.Elasticsearch.Endpoints.Authentication.Secret.SecretName`(where scope is `External`)
+* `status.components.elasticsearch.endpoints[x].uri` (where `status.components.elasticsearch.endpoints[x].scope` is `External`)
+* `status.components.elasticsearch.endpoints[x].authentication.secret.secretName`(where `status.components.elasticsearch.endpoints[x].scope` is `External`)
 
 This is a sample output:
 
 ```
-Status:
-  Components:
+status:
+  components:
     elasticsearch:
       endpoints:
       - authentication:
@@ -39,7 +39,7 @@ Status:
         name: iaf-system-es
         scope: External
         type: API
-        uri: https://iaf-system-es-baw1.apps.bawdev-x301.cp.fyre.ibm.com
+        uri: https://iaf-system-es-demo-project.apps.bottled.cp.fyre.ibm.com
       - authentication:
           secret:
             secretName: icp4ba-es-auth
@@ -48,9 +48,9 @@ Status:
           key: ca.crt
           secretName: iaf-system-elasticsearch-es-ss-cacert-kp
         name: iaf-system-elasticsearch-es
-        scope: External
+        scope: Internal
         type: API
-        uri: https://iaf-system-es-baw1.apps.mydeployment.cp.fyre.ibm.com
+        uri: https://iaf-system-elasticsearch-es.demo-project:9200
 ```
 
 ---
