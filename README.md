@@ -2,13 +2,13 @@
 
 IBM® Process Federation Server is a component for IBM Business Automation Workflow (BAW) and IBM Business Process Manager (BPM) environments. This component creates a federated process environment that provides business users with a single point of access to their task list and launch list, regardless of the type of process that they are working on and the BAW and / or BPM back-end system on which the process artifacts are stored.
 
-When IBM Business Automation Workflow traditional offering is deployed on-premises, IBM Process Federation Server is an optional component that is extensively documented in the [IBM Business Automation Workflow Knowledge Center](https://www.ibm.com/docs/en/baw/22.x?topic=server-traditional-installing-enabling-process-federation).
+When IBM Business Automation Workflow traditional offering is deployed on-premises, IBM Process Federation Server is an optional component that is extensively documented in the [IBM Business Automation Workflow Knowledge Center](https://www.ibm.com/docs/en/baw/23.x?topic=server-traditional-installing-enabling-process-federation).
 
 When IBM Business Automation Workflow containers are deployed on [Red Hat Openshift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift/container-platform) or other [CNCF Kubernetes platforms](https://www.cncf.io/projects/kubernetes/), Process Federation Server containers are also automatically deployed in order to provide a federated process environment that can be configured to federate on-premises Business Automation Workflow systems (V18.0.0.1 or later) with the Business Automation Workflow containers runtimes.
 
 For information about installing Business Automation Workflow on containers, see:
-* for stand-alone IBM Business Automation Workflow on containers: [Containers: Installing, configuring, and migrating IBM Business Automation Workflow](https://www.ibm.com/docs/en/baw/22.x?topic=2201-containers-installing-business-automation-workflow);
-* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing IBM Cloud Pak for Business Automation](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=automation-installing)
+* for stand-alone IBM Business Automation Workflow on containers: [Containers: Installing, configuring, and migrating IBM Business Automation Workflow](https://www.ibm.com/docs/en/baw/23.x?topic=2301-containers-installing-business-automation-workflow);
+* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing IBM Cloud Pak for Business Automation](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.1?topic=automation-installing)
 
 The instructions for stand-alone IBM Business Automation Workflow on containers are similar to the instructions for the Business Automation Workflow Server (or Workflow Runtime) in the IBM Cloud Pak for Business Automation, and they both involve the creation of a Custom Resource of the ICP4ACluster kind. This Custom Resource is referenced as the _ICP4ACluster Custom Resource_ in this Process Federation Server containers documentation.
 
@@ -23,23 +23,23 @@ Since IBM® Cloud Pak for Business Automation (CP4BA) 22.0.1, Process Federation
   
   * **[Process Federation Server statefulset](./documentation/PFS-Statefulset.md)**
 
-    Process Federation Server is deployed as a [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) named `<icp4acluster-instance-name>-pfs`. This section provide detailed information about this statefulset. 
+    Process Federation Server is deployed as a [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) named `<icp4acluster-instance-name>-pfs`. This section provide detailed information about this statefulset, how to access its REST API and how to configure it.
 
-  * **[Using Elasticsearch when running Process Federation Server containers](./documentation/Using-Elasticsearch.md)**
+  * **[Defining a federated data repository for Process Federation Server containers](./documentation/Defining-a-federated-data-repository.md)**
 
-    Process Federation Server uses a [remote Elasticsearch service](https://www.ibm.com/docs/en/baw/20.x?topic=service-configuring-remote-elasticsearch) to store data. The topics in this section provide detailed information about the different types of Elasticsearch cluster that can be used by PFS containers, depending on the type of IBM Business Automation Workflow containers installation:
+    Process Federation Server uses a [remote federated data respository](https://www.ibm.com/docs/en/baw/23.x?topic=service-declaring-federated-data-repository-in-serverxml), implemented with an Elasticsearch or Opensearch cluster, to store data. The topics in this section provide detailed information about the different types of Elasticsearch or Opensearch clusters that can be used by PFS containers to implement the federated data repository, depending on the type of IBM Business Automation Workflow containers installation:
 
-    * **[Using Elasticsearch provided by IBM Automation Foundation](./documentation/Using-IAF-Elasticsearch.md)**
+    * **[Using an Elasticsearch cluster provided by IBM Cloud Pak foundational services](./documentation/Using-CPfs-Elasticsearch.md)**
 
-      When deploying IBM Business Automation Workflow containers with IBM Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use Elasticsearch provided by IBM Automation Foundation. This section provides information about using this type of Elasticsearch cluster.
+      When deploying IBM Business Automation Workflow containers with IBM Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use an Elasticsearch cluster provided by IBM Cloud Pak foundational services. This section provides information about using this type of Elasticsearch cluster as the Process Federation Server federated data repository.
 
-    * **[Deploying Elasticsearch as part of the stand-alone IBM Business Automation Workflow on containers deployment](./documentation/Using-standalone-BAW-Elasticsearch.md)**
+    * **[Deploying an Elasticsearch cluster as part of the stand-alone IBM Business Automation Workflow on containers deployment](./documentation/Using-standalone-BAW-Elasticsearch.md)**
 
         When deploying stand-alone IBM Business Automation Workflow on containers on AMD64 architectures, by default the ICP4ACluster Custom Resource is configured to create a statefulset, `<icp4acluster-instance-name>-elasticsearch-statefulset`, that deploys pods running Elasticsearch. This option is not supported on other architectures. This section provide information about using this type of Elasticsearch cluster.
 
-    * **[Referencing your own Elasticsearch](./documentation/Using-own-Elasticsearch.md)**
+    * **[Referencing your own Elasticsearch or Opensearch cluster](./documentation/Using-own-Elasticsearch-or-Opensearch.md)**
 
-      Instead of using Elasticsearch as part of the stand-alone IBM Business Automation Workflow on containers deployment or the IBM Business Automation Workflow Server (or Workflow Runtime) in the IBM Cloud Pak for Business Automation deployment, you can decide to reference your own Elasticsearch. This section provide information about referencing this type of Elasticsearch cluster.
+      Instead of using Elasticsearch as part of the stand-alone IBM Business Automation Workflow on containers deployment or the IBM Business Automation Workflow Server (or Workflow Runtime) in the IBM Cloud Pak for Business Automation deployment, you can decide to reference your own Elasticsearch or Opensearch cluster. This section provide information about referencing this type of clusters.
 
 * **[Specifying Process Federation Server user authorizations on Kubernetes](./documentation/Authorizations.md)**
 
@@ -51,11 +51,11 @@ Since IBM® Cloud Pak for Business Automation (CP4BA) 22.0.1, Process Federation
 
 * **[Indexing case instances](./documentation/Indexing-Case-instances.md)**
 
-  The case management tools provide support for indexing case instances in the Elasticsearch index. Full reindexing and live index updates are supported. This section provides detailed information about that.
+  The case management tools provide support for indexing case instances in a federated data repository index. Full reindexing and live index updates are supported. This section provides detailed information about that.
 
-* **[Migrating saved searches to a new Elasticsearch cluster](./documentation/Migrating-Saved-Searches.md)**
+* **[Migrating saved searches to a new federated data repository](./documentation/Migrating-Saved-Searches.md)**
 
-  Process Federation Server Containers stores federated saved searches in an Elasticsearch index. To migrate from one Elasticsearch cluster to another, you need to migrate existing saved searches. This section provides detailed information about that.
+  Process Federation Server Containers stores federated saved searches in an index of the federated data repository. To migrate from one  federated data repository to another, you need to migrate existing saved searches. This section provides detailed information about that.
 
 * **[Maintaining, monitoring and troubleshooting IBM Process Federation Server in a container environment](./documentation/Maintaining-monitoring-and-troubleshooting.md)**
 
@@ -63,7 +63,7 @@ Since IBM® Cloud Pak for Business Automation (CP4BA) 22.0.1, Process Federation
 
   * **[Rebuilding federated systems indexes](./documentation/Rebuilding-indexes.md)**
 
-    If you want to delete an Elasticsearch index containing data from a federated system, you can use the procedure documented in this section, that does not require you to restart any pod.
+    If you want to delete a federated data repository index containing data from a federated system, you can use the procedure documented in this section, that does not require you to restart any pod.
   
   * **[Monitoring IBM Process Federation Server](./documentation/Monitoring-PFS.md)**
 

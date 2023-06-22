@@ -1,6 +1,6 @@
 # Rebuilding federated systems indexes
 
-If you want to delete an Elasticsearch index containing data from a federated system, you can use the following procedure, that does not require you to restart any pod.
+If you want to delete a federated data repository index containing data from a federated system, you can use the following procedure, that does not require you to restart any pod.
 
 ## Procedure
 
@@ -11,15 +11,15 @@ If you want to delete an Elasticsearch index containing data from a federated sy
 
 1. List the existing indexes:
    ```
-   curl -k -u<Elasticsearch_Username>:<Elasticsearch_Password> $ES_ENDPOINTS/_cat/indices
+   curl -k -u<FederatedDataRepository_Username>:<FederatedDataRepository_Password> $ES_ENDPOINTS/_cat/indices
    ```
-   Replace _<Elasticsearch_Username>_ and _<Elasticsearch_Password>_ with the Elasticsearch username and password that you can retrieve as follows:
-   * if your topology uses Elasticsearch from IBM Automation Foundation, the username and password are in the secret named `icp4ba-es-auth`
+   Replace _<FederatedDataRepository_Username>_ and _<FederatedDataRepository_Password>_ with the federated data repository username and password that you can retrieve as follows:
+   * if your topology uses Elasticsearch from IBM Cloud Pak foundational services, the username and password are in the secret named `icp4ba-es-auth`
    * for other topologies, the username and password are in the secret referenced as `elasticsearch_configuration.admin_secret_name` in the ICP4ACluster custom resource.
 
 1. Delete the index containing data about a given federated system:
    ```
-   curl -X DELETE -k -u$<Elasticsearch_Username>:<Elasticsearch_Password> $ES_ENDPOINTS/<Index_Name>
+   curl -X DELETE -k -u$<FederatedDataRepository_Username>:<FederatedDataRepository_Password> $ES_ENDPOINTS/<Index_Name>
    ```
    After the deletion of the index, Process Federation Server automatically rebuilds it.
    

@@ -6,9 +6,9 @@ When Process Federation Server is deployed using an ICP4ACluster Custom Resource
 
     Process Federation Server is deployed as a [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) named `<icp4acluster-instance-name>-pfs`.
 
-* **[Using Elasticsearch when running Process Federation Server with IBM Cloud Pak for Business Automation](./Using-Elasticsearch.md)**
+* **[Defining a federated data repository for Process Federation Server containers](./Defining-a-federated-data-repository.md)**
 
-    Process Federation Server uses a [remote Elasticsearch service](https://www.ibm.com/docs/en/baw/22.x?topic=service-configuring-remote-elasticsearch) to store data.
+    Process Federation Server uses a [remote federated data respository](https://www.ibm.com/docs/en/baw/23.x?topic=service-declaring-federated-data-repository-in-serverxml), implemented with an Elasticsearch or Opensearch cluster, to store data. 
 
 
 ---

@@ -6,7 +6,16 @@ If you face any issue with Process Federation Server, you can reach IBM® suppor
 
 By default, logs are configured for an integration with [Openshift Cluster Logging](https://www.ibm.com/docs/en/openshift?source=https%3A%2F%2Fdocs.openshift.com%2Fcontainer-platform%2F4.3%2Flogging%2Fcluster-logging.html&referrer=SS8JB4_20.x%2Fcom.ibm.wbpm.main.doc%2Ftopics%2Fcon_pfs_tbshoot.html). For this purpose, all logs are output to stdout in JSON format, and are also stored in a file named `/logs/application/liberty-message.log` in basic format by default.
 
-You can customize logging using [pfs_configuration.logs.*](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver) CR values.
+You can customize logging using [pfs_configuration.logs.*](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.2?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver) CR values as following:
+```
+pfs_configuration:
+   logs:
+       console_format: "json"
+       console_log_level: "INFO"
+       console_source: "message,trace,accessLog,ffdc,audit"
+       trace_format: "ENHANCED"
+       trace_specification: "*=info"
+```
 
 You can also customize logging by providing your own [configuration dropin](https://www.ibm.com/docs/en/was-liberty/core?topic=files-using-configuration-dropins-folder-specify-server-configuration) through the [pfs_configuration.config_dropins_overrides_secret](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver) CR value.
 
@@ -22,6 +31,12 @@ You can also customize logging by providing your own [configuration dropin](http
         traceFormat="ENHANCED"
         traceSpecification="*=info" />
 </server>
+```
+To see the logs, run the oc logs PFS_pod_name command to see the logs, or log into Process Federation Server.
+The following example shows how to check the Process Federation Server container logs:
+```
+$ oc exec -it icp4adeploy-pfs-0 bash
+$ cat /logs/application/icp4adeploy-pfs-0/liberty-message.log
 ```
 
 The above configuration:

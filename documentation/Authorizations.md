@@ -23,14 +23,14 @@ The following table lists the default authorizations that are sets for Process F
 | `adminSharedSavedSearch` | Admin users and/or the admin groups if they are defined in the Custom Resource |
 | `doNotCreateSavedSearch` | None |
 
-For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/22.x?topic=portal-federated-systems-authorization-saved-searches).
+For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/23.x?topic=portal-federated-systems-authorization-saved-searches).
 
 ## Defining your own set of authorizations
 
 The syntax to reference a group or a user in authorizations differs depending on your deployment of Process Federation Server containers:
 
 * For a deployment on OpenShift with Portal UI enabled, the syntax is `access-id="user:jwtrealm/USER_ID"` and `access-id="group:jwtrealm/GROUP_ID"`.
-* For others deployments using UMS, the syntax is `access-id="user:o=defaultWIMFileBasedRealm/USER_ID"` and `access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"`.
+* For other deployments using UMS, the syntax is `access-id="user:o=defaultWIMFileBasedRealm/USER_ID"` and `access-id="group:o=defaultWIMFileBasedRealm/GROUP_ID"`.
 
 Use the following procedure if you need to set up your own set of authorizations:
 
@@ -74,7 +74,7 @@ stringData:
     </authorization-roles>
   </server>
   ```
-  For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/22.x?topic=portal-federated-systems-authorization-saved-searches).
+  For more information about the different roles and the corresponding granted authorizations, see [Federated systems and authorization for saved searches](https://www.ibm.com/docs/en/baw/23.x?topic=portal-federated-systems-authorization-saved-searches).
 
 * To reference a user in the .xml file, and assign this user a role, use one of the following syntaxes:
 
@@ -116,6 +116,6 @@ pfs_configuration:
   
 ---
 
-**Parent topic:** [Administering and operating IBM Process Federation Server](./README.md)
+**Parent topic:** [Administering and operating IBM Process Federation Server](../README.md)
 
 **Index:** [Documentation index](../README.md#documentation-index)

@@ -1,10 +1,10 @@
 # Indexing case instances
 
-The case management tools provide support for indexing case instances in the Elasticsearch index. Full reindexing and live index updates are supported.
+The case management tools provide support for indexing case instances in a federated data repository index. Full reindexing and live index updates are supported.
 
 ## About this task
 
-After enabling case federation, the Elasticsearch index rebuild will need to be triggered by an administrator or operator for the historical case instances to be indexed. The first indexing must be performed before a case management system is registered to Process Federation Server. Subsequent full reindexing is rarely needed, but you can initiate full reindexing if you find that the index is not up to date. Case instances with the following properties are indexed:
+After enabling case federation, the federated data repository index rebuild will need to be triggered by an administrator or operator for the historical case instances to be indexed. The first indexing must be performed before a case management system is registered to Process Federation Server. Subsequent full reindexing is rarely needed, but you can initiate full reindexing if you find that the index is not up to date. Case instances with the following properties are indexed:
 
 * Fixed well-known metadata properties
 * Business properties (case properties) defined in the Search view or Summary view of the case solution with the exception of Business objects.
