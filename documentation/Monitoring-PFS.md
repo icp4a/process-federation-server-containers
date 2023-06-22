@@ -4,7 +4,7 @@ You can monitor a running server to gather information, detect issues, and perfo
 
 ## Accessing the Process Federation Server MBeans
 
-[JMX Mbeans](https://www.ibm.com/docs/en/baw/22.x?topic=server-monitoring-administering-process-federation) are deployed with Process Federation Server to monitor and perform administrative tasks for Process Federation Server servers.
+[JMX Mbeans](https://www.ibm.com/docs/en/baw/23.x?topic=server-monitoring-administering-process-federation) are deployed with Process Federation Server to monitor and perform administrative tasks for Process Federation Server servers.
 
 The MBeans execution must be performed on a given pod. As a Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) is created to expose all the pods of the Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), if you have more than one replica in your Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), this [service](https://kubernetes.io/docs/concepts/services-networking/service/) cannot be used to access the MBeans. Instead, you must open a terminal on a Process Federation Server pod, and then access the MBean on `localhost`.
 

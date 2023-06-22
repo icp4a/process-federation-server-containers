@@ -1,10 +1,8 @@
-# Using Elasticsearch provided by IBM Automation Foundation
+# Using Elasticsearch provided by IBM Cloud Pak foundational services
 
-When deploying the IBM® Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use Elasticsearch provided by IBM Automation Foundation.
+When deploying the IBM® Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use Elasticsearch provided by IBM Cloud Pak foundational services.
 
-For more information, see [IBM Automation Foundation operational data store](https://www.ibm.com/docs/en/cloud-paks/1.0?topic=configuration-operational-datastore).
-
-IBM Automation Foundation will deploy a [statefulset](https://kubernetes.io/fr/docs/concepts/workloads/controllers/statefulset/) named `iaf-system-elasticsearch-es-data` with the following number of replicas:
+IBM Cloud Pak foundational services will deploy a [statefulset](https://kubernetes.io/fr/docs/concepts/workloads/controllers/statefulset/) named `iaf-system-elasticsearch-es-data` with the following number of replicas:
 
 * 1 replica if `spec.shared_configuration.sc_deployment_type` property of the ICP4ACluster Custom Resource is set to "starter" or if `spec.shared_configuration.sc_deployment_profile_size` is set to "small" or "medium";
 
@@ -55,6 +53,6 @@ status:
 
 ---
 
-**Parent topic:** [Using Elasticsearch when running Process Federation Server with IBM Cloud Pak for Business Automation](./Using-Elasticsearch.md)
+**Parent topic:** [Defining a federated data repository for Process Federation Server containers](./Defining-a-federated-data-repository.md)
 
 **Index:** [Documentation index](../README.md#documentation-index)

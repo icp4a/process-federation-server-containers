@@ -4,7 +4,7 @@ You can maintain and monitor IBM® Process Federation Server, and troubleshoot i
 
 * **[Rebuilding federated systems indexes](./Rebuilding-indexes.md)**
 
-  If you want to delete an Elasticsearch index containing data from a federated system, you can use the following procedure, that does not require you to restart any pod.
+  If you want to delete a federated data repository index containing data from a federated system, you can use the following procedure, that does not require you to restart any pod.
 
 * **[Monitoring IBM Process Federation Server](./Monitoring-PFS.md)**
 
