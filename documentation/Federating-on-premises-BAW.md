@@ -21,6 +21,7 @@ The configuration of each on-premise system requires the following steps:
 > **Note:**
 > If you upgraded from a version earlier than 23.0.1, and your topology was already federating an on-premise system before the upgrade, you must reconfigure the federation of the on-premise system by following the procedure provided in this document.
 
+<br/>
 ---
 
 ## 1- Preparing the on-premise Business Automation Workflow for federation
@@ -106,6 +107,8 @@ The OpenId Connect application is shipped with your installation of on-premise B
 
 ##### 1.1.2.5- Registering a new OIDC Client in Identity and Management service
 
+> **Note** : This step is only required if SSO is not already configured in some way (SpNego, SAML)
+
 To configure a Trust Association Interceptor (TAI), which acts as an OIDC Relying Party (RP) for Identity and Management (IM) service, you must first register in IM a client for your on-premise system. This registration can be performed automatically by [defining a CustomResourceDefinition (CRD) for OpenID Connect (OIDC) registration](https://www.ibm.com/docs/en/cpfs?topic=sign-automated-client-registration-method-3).
 
 In the same namespace as the `cp-console` route, create the following Client custom resource: 
@@ -151,6 +154,8 @@ You can now create the TAI with 2 providers:
 - `provider_1` to authenticate against the Cloud Pak Platform UI (Zen) the requests from Workplace or PFS that come with an `Authorization` HTTP header that contains a 'Bearer' token
 - `provider_2` to authenticate against the Identity and Management (IM) service, by following the OAuth flow, the requests from Workplace that do not come with an `Authorization` HTTP header that contains a 'Bearer' token
 
+> **Note** : If SSO is already configured in some way (SpNego, SAML). you can skip all 'provider_2' properties 
+
 1. Log in to the administrative console of the WebSphere Application server running on-premise Business Automation Workflow. 
 2. Expand `Security` and click `Global Security`.
 3. In `User account repository`, make sure that your server is set up to use the same user repository as your deployment on Red Hat OpenShift, which is a prerequisite to enable federation of the system by the Process Federation Server that is deployed on Red Hat OpenShift.
@@ -185,6 +190,28 @@ You can now create the TAI with 2 providers:
 
 <br/>
 
+##### 1.1.2.7- Give the current TAI a highest priority than the PreemptiveBasicAuthTAI
+
+In a default BAW installation, 2 pre-existing TAIs are already configured:
+- `com.ibm.bpm.security.PreemptiveBasicAuthTAI`
+- `com.ibm.portal.auth.tai.HTTPBasicAuthTAI`
+
+Upon incoming requests, it is required that the new TAI that you have configured is challenged before the `PreemptiveBasicAuthTAI`. 
+
+As the TAIs are processed in the chronological order of their creation, you must delete the `PreemptiveBasicAuthTAI` TAI and recreate it. Here is the procedure to recreate the `com.ibm.bpm.security.PreemptiveBasicAuthTAI` TAI:
+- in Webpshere console, go to `Security` > `Global security`
+- expand `Web and SIP security` and click `Trust association`
+- click on `Interceptors`
+- click on `com.ibm.bpm.security.PreemptiveBasicAuthTAI`, and note the list of custom properties
+- get back to the list of interceptors by clicking on `Interceptors`
+- select the `com.ibm.bpm.security.PreemptiveBasicAuthTAI` interceptor and click `Delete`
+- click `New...` 
+- enter in `Interceptor class name` : `com.ibm.bpm.security.PreemptiveBasicAuthTAI`
+- reset the properties exactly as they were initially defined. Any property which had a null value out of the box do not need to be recreated
+- click `OK`
+
+<br/>
+
 Once the interceptor configuration is applied and saved, restart the Business Automation Workflow server to activate the interceptor.
 
 <br/>
@@ -200,25 +227,28 @@ The distributed Process Federation Server index enables process participants to 
 
 As part of this configuration:
 - you must create the change log tables in the Process Server database of the Business Automation Workflow system. In the pod that runs Process Federation Server, the database scripts are located in `/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/dbscripts/`. To retrieve these scripts, execute the following command:
-```
-oc cp <PFS_pod_name>:/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/dbscripts/ .
-```
+  ```
+  oc cp <PFS_pod_name>:/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/dbscripts/ .
+  ```
 - you must update the `<BAW_root>/profiles/<Dmgr_Profile>/config/cells/<Cell_name>/nodes/<Node_name>/servers/<server_name>/process-server/config/100Custom.xml` file of each node of your cluster so that it contains the following configuration:
-```
-</properties> 
+  ```
+  </properties> 
     <server merge="mergeChildren">
         <search-index merge="mergeChildren">
             <federated-index-enabled merge="replace">true</federated-index-enabled>
         </search-index>
     </server>
-</properties> 
-```
+  </properties> 
+  ```
 
+<br/>
 <br/>
 
 ### 1.3- Declaring Workplace as an allowed origin
 
 <br/>
+
+##### 1.3.1 Configure BAW for allowed origins
 
 To allow Workplace to send queries to the on-premise system REST API, Workplace URL must be declared as an allowed origin on the on-premise system configuration. To achieve this, merge the following configuration in the same `100Custom.xml` file(s) as in the previous section:
 ```
@@ -237,6 +267,32 @@ To allow Workplace to send queries to the on-premise system REST API, Workplace 
 > 3. Go to **Servers > Server Types > WebSphere application servers**.
 > 4. Select the BAW server and click **Restart**.
 
+<br/>
+
+##### 1.3.2 Configure any frontend IHS loadbalancer for allowed origins
+
+If the on-premise IBM Business Automation Workflow or IBM Business Process Manager system is configured to use a frontend IBM HTTP Server ( IHS ) loadbalancer ( including the WebSphere WebServer Plugin ) then IHS needs to be configured for allowed origins as well.
+
+
+
+Update the configuration file on the HTTP server, for example httpd.conf or apache.conf, or the .htaccess file with the following settings.
+
+1. **Do not** use the asterisk (*) wildcard character in any of the statements.
+
+   ```plaintext-ibm
+   Header always set Access-Control-Allow-Origin "https://cpd-myworkspace.apps.myocp.cp.mycompany.com"
+   Header set Access-Control-Allow-Credentials "true"
+   Header set Access-Control-Allow-Headers "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+   Header set Access-Control-Allow-Methods "GET,POST,PUT,DELETE,OPTIONS"
+   Header onsuccess unset Access-Control-Allow-Origin
+   SetEnvIfNoCase REQUEST_METHOD OPTIONS skipwas=1
+   ```
+
+2. Allow the HTTP server to modify the request and response headers by enabling `mod_headers` in the configuration file.
+
+3. Restart the HTTP server for the changes to take effect.
+
+<br/>
 <br/>
 
 ### 1.4- Configuring the Content Security Policy on the on-premise system
@@ -282,12 +338,12 @@ wsadmin>AdminConfig.save()
 When federating an on-premise system from a standalone IBM® Business Automation Workflow deployment on containers, for Workplace to render the Client Side Human Services without hitting violations of the Content Security Policies, you must edit the **ICP4ACluster** custom resource as follows:
 1. In the **ICP4ACluster** custom resource, locate the item in `spec.baw_configuration` where you have `host_federated_portal: true`.
 2. In this item, merge the following properties:
-```
-    host_federated_portal: true
-    federated_portal:
-      content_security_policy_additional_origins:
-        - 'https://myonprembaw.mycompany.com:9443'
-```
+   ```
+       host_federated_portal: true
+       federated_portal:
+         content_security_policy_additional_origins:
+           - 'https://myonprembaw.mycompany.com:9443'
+   ```
 
 You must also configure the on-premise Content Security Policy to reference the URLS to PFS, Workplace, UMS and Application Engine in the `connect-src`, `frame-src`and `script-sec-elem` directives.
 
@@ -314,7 +370,6 @@ wsadmin>AdminConfig.save()
 > **Note:** The documentation about the Security-hardening properties is [here](https://www.ibm.com/docs/en/baw/23.x?topic=environment-security-hardening-properties).
 
 <br/>
-
 ---
 
 ## 2- Configuring Process Federation Server to federate the on-premise Business Automation Workflow system
@@ -327,6 +382,7 @@ Now that the Business Automation Workflow system is properly configured to be fe
 
 ![Indexing options diagram](/documentation/images/indexing-options.png)
 
+<br/>
 <br/>
 
 ### 2.2- Creating a FederatedSystem custom resource to reference your on-premise system
@@ -369,9 +425,9 @@ To get the on-premise system root certificate, follow these steps:
 4. For the data type, select Base64-encoded ASCII data.
 5. Click **Apply**. From the message, note where the certificate is stored on the file system. Then transfer it to the cloud platform where Process Federation Server is deployed.
 6. You can create the Kubernetes secret as shown in the following example:
-```
-kubectl create secret generic onprem-cert-secret --from-file=tls.crt=/path/to/on-prem-cert.crt
-```
+   ```
+   kubectl create secret generic onprem-cert-secret --from-file=tls.crt=/path/to/on-prem-cert.crt
+   ```
 
 <br/>
 
@@ -496,6 +552,7 @@ This secret would contain [Liberty configuration dropins](https://www.ibm.com/do
 - to override the configuration tags which are generated using the [Basic federation](#221--basic-federation) procedure. To achieve this, you must first copy-paste the content of the key from the secret with the same name as the **FederatedSystem** custom resource into a new key in the secret referenced as `spec.advancedConfig`, and then adapt it as needed to add or change the default configuration properties. For the generated configuration to be overridden by your custom configuration, you must take care that the key in the secret referenced as `spec.advancedConfig` is alphabetically greater than the key in the secret with the same name as the **FederatedSystem** custom resource. The `id` property of the generated configuration tags must remain unchanged.
 
 
+<br/>
 ---
 
 ## 3- Verifying that the on-premise Business Automation Workflow system is successfully federated
@@ -507,6 +564,7 @@ In the response, verify that in the `federationResult` array, there is an item f
 
 For more details about how to access the Process Federation Server REST API, see [this documentation](/documentation/PFS-Statefulset.md#accessing-the-rest-api).
 
+<br/>
 --- 
 
 **Parent topic:** [Administering and operating IBM® Process Federation Server](../README.md)
