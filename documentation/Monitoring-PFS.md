@@ -36,7 +36,7 @@ To use the admin scripts, you must also define the following environment variabl
 ```
 export WLP_HOME=/opt/ibm/wlp/
 export PFS_ADMIN_HOME=/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/adminScripts
-export PFS_JAVA_OPTS=-J-Dcom.ibm.ws.jmx.connector.client.disableURLHostnameVerification=true
+export PFS_JAVA_OPTS=-Dcom.ibm.ws.jmx.connector.client.disableURLHostnameVerification=true
 ```
 
 Here is an example of the options file that will be passed as argument :
