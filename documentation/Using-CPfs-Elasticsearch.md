@@ -13,42 +13,40 @@ IBM Cloud Pak foundational services will deploy a [statefulset](https://kubernet
 To access the Elasticsearch REST API, you must retrieve its route and credentials by executing the command:
 
 ```
-oc get cartridgerequirements icp4ba -o yaml
+oc get elasticsearch iaf-system -o yaml
 ```
 
 Elasticsearch access information is in the returned content:
-* `status.components.elasticsearch.endpoints[x].uri` (where `status.components.elasticsearch.endpoints[x].scope` is `External`)
-* `status.components.elasticsearch.endpoints[x].authentication.secret.secretName`(where `status.components.elasticsearch.endpoints[x].scope` is `External`)
+* `status.endpoints[x].uri` (where `status.endpoints[x].scope` is `External`)
+* `status.endpoints[x].authentication.secret.secretName`(where `status.endpoints[x].scope` is `External`)
 
 This is a sample output:
 
 ```
 status:
-  components:
-    elasticsearch:
-      endpoints:
-      - authentication:
-          secret:
-            secretName: icp4ba-es-auth
-          type: BasicSecret
-        caSecret:
-          key: ca.crt
-          secretName: iaf-system-elasticsearch-es-ss-cacert-kp
-        name: iaf-system-es
-        scope: External
-        type: API
-        uri: https://iaf-system-es-demo-project.apps.bottled.cp.fyre.ibm.com
-      - authentication:
-          secret:
-            secretName: icp4ba-es-auth
-          type: BasicSecret
-        caSecret:
-          key: ca.crt
-          secretName: iaf-system-elasticsearch-es-ss-cacert-kp
-        name: iaf-system-elasticsearch-es
-        scope: Internal
-        type: API
-        uri: https://iaf-system-elasticsearch-es.demo-project:9200
+  endpoints:
+  - authentication:
+      secret:
+        secretName: iaf-system-elasticsearch-es-default-user
+      type: BasicSecret
+    caSecret:
+      key: ca.crt
+      secretName: foundation-iaf-automationbase-ab-ca
+    name: iaf-system-es
+    scope: External
+    type: API
+    uri: https://iaf-system-es-auto-s7pw5.apps.workflow-fvt-auto8.cp.fyre.ibm.com
+  - authentication:
+      secret:
+        secretName: iaf-system-elasticsearch-es-default-user
+      type: BasicSecret
+    caSecret:
+      key: ca.crt
+      secretName: foundation-iaf-automationbase-ab-ca
+    name: iaf-system-elasticsearch-es
+    scope: Internal
+    type: API
+    uri: https://iaf-system-elasticsearch-es.auto-s7pw5:9200
 ```
 
 ---

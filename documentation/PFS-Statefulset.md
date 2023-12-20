@@ -1,6 +1,6 @@
 # Process Federation Server statefulset
 
-Process Federation Server is deployed as a [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) named `<icp4acluster-instance-name>-pfs`.
+Process Federation Server is deployed as a [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) named `<cr-instance-name>-pfs`.
 
 Each pod of the [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) runs:
 * a container (`pfs`) that runs Process Federation Server server
@@ -10,7 +10,7 @@ Each pod of the [statefulset](https://kubernetes.io/docs/concepts/workloads/cont
 ## Configuration
 
 A default Process Federation Server configuration is provided as part of the docker image in `/config/server.xml` and also mounted from a [secret](https://kubernetes.io/fr/docs/concepts/configuration/secret/)
-(`<icp4acluster-instance-name>-pfs-config-secret`) in the `/config/configDropins/defaults` directory.
+(`<cr-instance-name>-pfs-config-secret`) in the `/config/configDropins/defaults` directory.
 
 You can override this default configuration by creating a [secret](https://kubernetes.io/fr/docs/concepts/configuration/secret/)
 that contains XML [configuration dropins](https://www.ibm.com/support/knowledgecenter/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/twlp_setup_dropins.html),
@@ -21,7 +21,7 @@ it will be mounted in the
 ## Accessing the REST API
 
 The Process Federation Server containers expose their HTTPS ports. A ClusterIP [service](https://kubernetes.io/docs/concepts/services-networking/service/)
-(`<icp4acluster-instance-name>-pfs-service`) exposes the ports of the pods that belong to the Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/).
+(`<cr-instance-name>-pfs-service`) exposes the ports of the pods that belong to the Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/).
 
 The base URL to use to connect externaly to the Process Federation Server REST API is found in the `status.endpoints` section of the `ProcessFederationServer` Custom Resource managed by the Process Federation Server operator. This section contains two entries:
 1. One for the service endpoint, which scope is `Internal`
@@ -67,13 +67,10 @@ If the external base URL is _https://my-cp4ba-deployment.mycompany.com_, the URL
 
 The servers running IBM Business Automation Workflow and/or IBM Automation Workstream Services within stand-alone IBM Business Automation Workflow on containers deployment or within IBM Cloud Pak for Business Automation are seamlessly federated by Process Federation Server:
 
-* A job creates the `PFS_BPD_*` tables in the database configured by `baw_configuration[x].database.*` CR values (see [Workflow Server configuration parameters](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__baw-config)). The supported database types are DB2, Oracle, and PostgreSQL.
+* A job creates the `PFS_BPD_*` tables in the database configured by `baw_configuration[x].database.*` CR values (see [Workflow Server configuration parameters](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__baw-config)). The supported database types are DB2, Oracle, SQLServer and PostgreSQL.
 
-* A resource registry, where IBM Business Automation Workflow instances are registered and unregistered, is also running. Process Federation Server continuously checks for new or deleted entries in the resource registry, and creates or removes the [configuration dropin](https://www.ibm.com/support/knowledgecenter/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/twlp_setup_dropins.html) related to these IBM Business Automation Workflow and IBM Cloud Pak for Business Automation servers. These [configuration dropins](https://www.ibm.com/support/knowledgecenter/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/twlp_setup_dropins.html) can be found on the container running Process Federation Server in the `/config/configDropins/defaults` directory under the names `.__xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.xml`
+* When federation is enabled (see [Federating IBM Business Automation Workflow on containers](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=deployment-federating-business-automation-workflow-containers)), the CP4BA operator automatically creates a FederatedSystem custom resource for each Business Automation Workflow system (BPD and Case) that is deployed in the same namespace as the Process Federation Server containers. To enable federation, see [Federating IBM Business Automation Workflow on containers](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=deployment-federating-business-automation-workflow-containers). The Process Federation Server operator monitors FederatedSystem custom resources and creates or removes the [configuration dropin](https://www.ibm.com/support/knowledgecenter/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/twlp_setup_dropins.html) related to these IBM Business Automation Workflow and IBM Cloud Pak for Business Automation servers. These [configuration dropins](https://www.ibm.com/support/knowledgecenter/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/twlp_setup_dropins.html) can be found on the container running Process Federation Server in the `/config/configDropins/overrides` directory. For FederatedSystem parameters, see [Federated system parameters](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=deployment-federated-system-parameters)
 
-* A deployment (`<icp4acluster-instance-name>-pfs-dbareg`) with one replica also runs continuously to maintain an entry in this resource registry which contains the Process Federation Server REST endpoint front end. UIs deployed by stand-alone IBM Business Automation Workflow on containers and IBM Cloud Pak for Business Automation retrieve this entry to later invoke Process Federation Server REST APIs.
-
-Process Federation Server that runs as part of IBM Cloud Pak for Business Automation can also federate IBM Business Automation Workflow running on-premise. For more information, see what Federating IBM Business Automation Workflow running on-premise .
 Process Federation Server that runs as part of IBM Cloud Pak for Business Automation can also federate IBM Business Automation Workflow running on-premise. For more information, [Federating IBM Business Automation Workflow running on-premise](./Federating-on-premises-BAW.md).
 
 ## User management
@@ -88,7 +85,7 @@ For more information about how authorizations for Process Federation Server user
 
 ## Persistent volumes
 
-By default, each Process Federation Server pod persists the Liberty server logs folder in a dedicated persistent volume. You can choose to use manual or dynamic provisioning, or to disable the logs persistence, or to change the size of persistent volume, by adapting the [pfs_configuration.logs.*](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver) CR values.
+By default, each Process Federation Server pod persists the Liberty server logs folder in a dedicated persistent volume. You can choose to use manual or dynamic provisioning, or to disable the logs persistence, or to change the size of persistent volume, by adapting the [pfs_configuration.logs.*](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=reference-cp4ba-process-federation-server-parameters) CR values.
 
 ---
 

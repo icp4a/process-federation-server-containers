@@ -1,12 +1,12 @@
 # Specifying Process Federation Server user authorizations on Kubernetes
 
-When Process Federation Server is installed as part of the ICP4ACluster Custom Resource, the operator defines a default set of authorizations for Process Federation Server users, that you can customize depending on your needs.
+When Process Federation Server is installed, the operator defines a default set of authorizations for Process Federation Server users, that you can customize depending on your needs.
 
 ## Default authorizations for Process Federation Server users
 
 The following attributes of the IBM® Cloud Pak for Business Automation Custom Resource define the administrator or the group of administrators to be used by the operator when setting the default authorizations:
-* [pfs_configuration.admin_user_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver): id(s) of the administrator user(s)
-* [pfs_configuration.admin_group_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=parameters-business-automation-workflow-runtime-workstream-services#ref_baw_params__pfserver): id(s) of the administrator group(s)
+* [pfs_configuration.admin_user_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=reference-cp4ba-process-federation-server-parameters): id(s) of the administrator user(s)
+* [pfs_configuration.admin_group_id](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=reference-cp4ba-process-federation-server-parameters): id(s) of the administrator group(s)
 
 These values are optional, consequently, by default there are no predefined administrator users or groups.
 See [Mapping management roles for Liberty](https://www.ibm.com/docs/en/was-liberty/core?topic=liberty-mapping-management-roles)
@@ -16,6 +16,7 @@ The following table lists the default authorizations that are sets for Process F
 | Roles      | Users and groups |
 | :---       | :---             |
 | `administrator` | Admin users and/or the admin groups if they are defined in the Custom Resource |
+| `pfsAdministrator` | Admin users and/or the admin groups if they are defined in the Custom Resource |
 | `restrictedBpmuser` | None |
 | `bpmuser` | All authenticated users |
 | `createSharedSavedSearch` | All authenticated users |
@@ -53,6 +54,9 @@ stringData:
    <group-access-id>[...]</group-access-id>
     </administrator-role>
     <authorization-roles id="com.ibm.bpm.federated.rest.authorization">
+        <security-role name="pfsAdministrator">
+          [...]
+        </security-role>
         <security-role name="restrictedBpmuser">
           [...]
         </security-role>
@@ -104,7 +108,7 @@ stringData:
 
 * The syntax for the administrator role slightly differs, and is documented in [Mapping management roles for Liberty](https://www.ibm.com/docs/en/was-liberty/base?topic=liberty-mapping-management-roles).
 
-#### 2. Define the following values in the ICP4ACluster Custom Resource:
+#### 2. Define the following values in the ProcessFederationServer Custom Resource:
 
   ```
 pfs_configuration:
@@ -112,7 +116,7 @@ pfs_configuration:
     config_dropins_overrides_secret: <name-of-your-secret>
   ```
 
-  This step ensures that no default authorizations are defined for the Process Federation Server server by the ICP4ACluster Custom Resource, and that all the `.xml` files defined in the Kubernetes secret `<name-of-your-secret>`, including the one that defines the authorizations, will be mounted in the config dropins directory of the Process Federation Server server, and properly added to the Process Federation Server server configuration.
+  This step ensures that no default authorizations are defined for the Process Federation Server server by the ProcessFederationServer Custom Resource, and that all the `.xml` files defined in the Kubernetes secret `<name-of-your-secret>`, including the one that defines the authorizations, will be mounted in the config dropins directory of the Process Federation Server server, and properly added to the Process Federation Server server configuration.
   
 ---
 

@@ -6,7 +6,7 @@ If you want to delete a federated data repository index containing data from a f
 
 1. Open a terminal on a container running within a Process Federation Server pod from the Console UI of your Openshift cluster or using CLI:
    ```
-   kubectl exec -it <icp4acluster-instance-name>-pfs-0 -- bash
+   kubectl exec -it <cr-instance-name>-pfs-0 -- bash
    ```
 
 1. List the existing indexes:
@@ -15,7 +15,7 @@ If you want to delete a federated data repository index containing data from a f
    ```
    Replace _<FederatedDataRepository_Username>_ and _<FederatedDataRepository_Password>_ with the federated data repository username and password that you can retrieve as follows:
    * if your topology uses Elasticsearch from IBM Cloud Pak foundational services, the username and password are in the secret named `icp4ba-es-auth`
-   * for other topologies, the username and password are in the secret referenced as `elasticsearch_configuration.admin_secret_name` in the ICP4ACluster custom resource.
+   * for other topologies, the username and password are in the secret referenced as `elasticsearch_configuration.admin_secret_name` in the ProcessFederationServer custom resource.
 
 1. Delete the index containing data about a given federated system:
    ```

@@ -11,7 +11,7 @@ The MBeans execution must be performed on a given pod. As a Kubernetes [service]
 You can open a terminal on a container running within a Process Federation Server pod from the Console UI of your Openshift cluster, or using CLI:
 
 ```
-kubectl exec -it <icp4acluster-instance-name>-pfs-0 -- bash
+kubectl exec -it <cr-instance-name>-pfs-0 -- bash
 ```
 
 A pre requisite to access the MBeans is to have at least one user with the `administrator-role` authorization. [Specifying Process Federation Server user authorizations on Kubernetes](./Authorizations.md) provides detailed instructions on how to do that.

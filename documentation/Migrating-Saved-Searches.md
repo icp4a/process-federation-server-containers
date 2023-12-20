@@ -4,6 +4,8 @@ Because Process Federation Server Containers stores the federated saved searches
 
 > **Note:** If you need information about how to access the Process Federation Server Containers REST APIs, see [Accessing the REST API](./PFS-Statefulset.md#accessing-the-rest-api)
 
+1.  The user performing the export of the saved searches, and then the import, must be granted the PFS adminSavedSearch role (see [Specifying Process Federation Server user authorizations on Kubernetes](./Authorizations.md) for more information about how to grant the PFS adminSavedSearch role to a user).
+
 1. Use the `GET /rest/bpm/federated/v1/searches/transfer` REST API to export all the Process Federation Server saved searches as a JSON object, such as the following one:
    ```
    {
