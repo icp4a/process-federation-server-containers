@@ -9,7 +9,7 @@ When IBM Business Automation Workflow containers are deployed on [Red Hat Opensh
 
 For information about installing Process Federation Server on containers, see:
 * for stand-alone IBM Business Automation Workflow on containers: [Installing Process Federation Server on containers](https://www.ibm.com/docs/en/baw/23.x?topic=containers-installing-process-federation-server);
-* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing a CP4BA Process Federation Server deployment](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=deployments-installing-cp4ba-process-federation-server-deployment)
+* for IBM Business Automation Workflow deployment with IBM Cloud Pak for Business Automation: [Installing a CP4BA Process Federation Server deployment](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/23.0.2?topic=deployments-installing-cp4ba-process-federation-server-production-deployment)
 
 For both types of deployments, the Process Federation Server containers lifecycle is managed by the IBM Process Federation Server Operator that relies on a ProcessFederationServer Custom Resource for configuring the deployment. This Custom Resource is referenced as the _ProcessFederationServer Custom Resource_ in this Process Federation Server containers documentation.
 
