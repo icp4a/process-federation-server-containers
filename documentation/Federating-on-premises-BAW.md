@@ -304,10 +304,21 @@ The procedure is different depending on whether your Process Federation Server b
 
 #### 1.4.1- Configuring the Content Security Policy when federating from IBM Cloud Pak for Business Automation
 
-When federating an on-premise system from IBM Cloud Pak for Business Automation, for Workplace to render the Client Side Human Services without hitting violations of the on-premise Content Security Policy, the on-premise system URL must be declared as a valid source for the following directives:
+When federating an on-premise system from IBM Cloud Pak for Business Automation, for Workplace to render the Client Side Human Services without hitting violations of the Content Security Policies, you must edit the **ICP4ACluster** custom resource as follows:
+1. In the **ICP4ACluster** custom resource, if there is an item in `spec.baw_configuration` where you have `host_federated_portal: true`.
+2. In this item, merge the following properties:
+   ```
+       host_federated_portal: true
+       federated_portal:
+         content_security_policy_additional_origins:
+           - 'https://myonprembaw.mycompany.com:9443'
+   ```
+
+The on-premise Content Security Policy must also be set appropriately. The on-premise system URL must be declared as a valid source for the following directives:
  - `default-src`
  - `script-src`
  - `frame-src`
+ - `frame-ancestors`
  - `object-src`
  - `connect-src`
  - `img-src`
