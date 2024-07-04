@@ -8,10 +8,14 @@ The configuration of each on-premise system requires the following steps:
     * [1.1.1- Configuring SSO when federating from a standalone Business Automation Workflow deployment on containers](#111--configuring-sso-when-federating-from-a-standalone-business-automation-workflow-deployment-on-containers)
     * [1.1.2- Configuring SSO when federating from IBM Cloud Pak for Business Automation](#112--configuring-sso-when-federating-from-ibm-cloud-pak-for-business-automation)
   * [1.2- Enabling indexing on the on-premise Business Automation Workflow system](#12--enabling-indexing-on-the-on-premise-business-automation-workflow-system)
+    * [1.2.1- Business Automation Workflow 24.0.0.0](#121--business-automation-workflow-24000)
+    * [1.2.2- Business Automation Workflow 23.0.2 and older](#122--business-automation-workflow-2302-and-older)
   * [1.3- Declaring Workplace as an allowed origin](#13--declaring-workplace-as-an-allowed-origin)
   * [1.4- Configuring the Content Security Policy on the on-premise system](#14--configuring-the-content-security-policy-on-the-on-premise-system)
 * [2- Configuring Process Federation Server to federate the on-premise Business Automation Workflow system](#2--configuring-process-federation-server-to-federate-the-on-premise-business-automation-workflow-system)
   * [2.1- Planning your federation](#21--planning-your-federation)
+    * [2.1.1- Business Automation Workflow 24.0.0.0](#211--business-automation-workflow-24000)
+    * [2.1.2- Business Automation Workflow 23.0.2 and older](#212--business-automation-workflow-2302-and-older)
   * [2.2- Creating a FederatedSystem custom resource to reference your on-premise system](#22--creating-a-federatedsystem-custom-resource-to-reference-your-on-premise-system)
     * [2.2.1- Basic configuration](#221--basic-configuration)
     * [2.2.2- Advanced configuration](#222--advanced-configuration)
@@ -101,7 +105,7 @@ Repeat the same procedure for the **cp-console** route.
 
 ##### 1.1.2.4- Installing the OpenID Connect application on the on-premise system
 
-The OpenId Connect application is shipped with your installation of on-premise Business Automation Workflow as an EAR file: _WebSphereOIDCRP.ear_. You must install this application by following step 1 of the procedure documented in [Configuring an OpenID Connect Relying Party](https://www.ibm.com/docs/en/was-nd/8.5.5?topic=users-configuring-openid-connect-relying-party).
+The OpenId Connect application is shipped with your installation of on-premise Business Automation Workflow as an EAR file: _WebSphereOIDCRP.ear_. You must install this application by following steps 1 and 2 of the procedure documented in [Configuring an OpenID Connect Relying Party](https://www.ibm.com/docs/en/was-nd/8.5.5?topic=users-configuring-openid-connect-relying-party).
 
 <br/>
 
@@ -223,7 +227,29 @@ Once the interceptor configuration is applied and saved, restart the Business Au
 
 ### 1.2- Enabling indexing on the on-premise Business Automation Workflow system
 
-The distributed Process Federation Server index enables process participants to see a consolidated list of BPD-related tasks from all Business Automation Workflow systems in the federated environment. For data from a federated Business Automation Workflow system to be included in the index, you must enable indexing on the Business Automation Workflow system, as described in [Enabling indexing on a federated system](https://www.ibm.com/docs/baw/23.x?topic=systems-enabling-indexing-federated-system).
+Process Federation Server enables process participants to see a consolidated list of BPD-related tasks and process instances from all Business Automation Workflow systems in the federated environment. It is required that the BPD tasks and process instances from the federated systems are all indexed into the federated data repository (Elasticsearch or Opensearch). Depending on the version of Business Automation Workflow that you are federating, the procedure to have the BPD data indexed into the federated data repository is different.
+
+#### 1.2.1- Business Automation Workflow 24.0.0.0
+
+Since 24.0.0.0, Business Automation Workflow can directly index the BPD tasks and process instances in the federated data repository (FDR). To achieve this, you must follow procedure documented in [Enabling the BPD indexing](https://www.ibm.com/docs/baw/24.x?topic=indexes-enabling-federated-data-repository-bpd-indexing).
+
+To follow the procedure to enable the BPD indexing, you need to know the FDR credentials, FDR URL and exposed TLS certiticate. 
+
+If you have not brought your own FDR when configuring Process Federation Server, then an Opensearch installation has been deployed for you:
+
+- <ins>if you have installed Process Federation Server as part of an IBM Cloud Pak for Business Automation deployment then :</ins>
+  - in the project/namespace where Process Fedderation Server is deployed, locate the ElasticsearchCluster custom resource. Its name will be useful in the next steps.
+  - search for the Openshift route which should be named `opensearch-route` if the ElasticsearchCluster custom resource is named `opensearch`. In this route you will find the host name to use for the URL under `spec.host`, and the TLS certificate exposed by this URL under `spec.tls.certificate`. Re-use these when configuring Business Automation Workflow to enable BPD indexing.
+  - to retrieve the credentials, search for a secret named `opensearch-ibm-elasticsearch-cred-secret` if the ElasticsearchCluster custom resource is named `opensearch`. This secret contains a key which can be used as login ID and whose value is the password to authenticate against the Opensearch REST API.
+
+- <ins>if you have installed Process Federation Server as part of a standalone BAW deployment on containers then :</ins>
+  - in the project/namespace where you have deployed Process Federation Server, locate the ProcessFederationServer custom resource. Its name will be useful in the next steps.
+  - search for the Kubernetes service which should be named `pfsdeploy-elasticsearch-service` if the ProcessFederationServer custom resource is named `pfsdeploy`. You must manually expose this service externally by creating a Kubernetes Ingress (or an Openshift Route if your are on Openshift). As you expose this service externally, you will define which URL to use to access it, and which TLS certificate is exposed. Re-use these when configuring Business Automation Workflow to enable BPD indexing.
+  - to retrieve the credentials, search for a secret named `pfsdeploy-pfs-secret-credential` if the ProcessFederationServer custom resource is named `pfsdeploy`. This secret contains a single key named `credentialvariables.xml`. Reveal the value of this key which contains an IBM Websphere Liberty configuration dropin. The credentials to authenticate against the Opensearch REST API are referenced under the `ES_USER_NAME` and `ES_PASSWORD` Liberty variables.
+
+#### 1.2.2- Business Automation Workflow 23.0.2 and older
+
+ When federating Business Automation Workflow 23.0.2 or older systems, the BPD tasks and process instances must be indexed into the federated data repository (FDR) by Process Federation Server. For PFS to index BPD data, you must first enable indexing on the Business Automation Workflow system, as described in [Enabling indexing on a federated system](https://www.ibm.com/docs/baw/23.x?topic=systems-enabling-indexing-federated-system).
 
 As part of this configuration:
 - you must create the change log tables in the Process Server database of the Business Automation Workflow system. In the pod that runs Process Federation Server, the database scripts are located in `/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/dbscripts/`. To retrieve these scripts, execute the following command:
@@ -387,11 +413,27 @@ wsadmin>AdminConfig.save()
 
 ### 2.1- Planning your federation
 
-Now that the Business Automation Workflow system is properly configured to be federated, you have two options regarding how data will be indexed from the on-premise relational database to the Federated Data Repository (Elasticsearch/Opensearch):
+Now that the Business Automation Workflow system is properly configured to be federated, you have options regarding how data will be indexed from the on-premise relational database to the Federated Data Repository (Elasticsearch/Opensearch). These options depend on the version of Business Automation Workflow system.
+
+Whichever option, you also have to ensure that your OCP/Kubernetes cluster is configured to allow outbound communication from the Process Federation Server pods to the on-prem Business Automation Workflow. For more details, see the IBM Documentation section about [Configuring cluster security](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/24.0.0?topic=security-configuring-cluster).
+
+#### 2.1.1- Business Automation Workflow 24.0.0.0
+
+Since 24.0.0.0, Business Automation Workflow can directly index the BPD tasks and process instances in the federated data repository (FDR). If you followed the procedure from [1.2.1 - Enabling indexing on the on-premise Business Automation Workflow 24.0.0.0](#121--business-automation-workflow-24000), then the Business Automation Workflow system is already indexing data into the FDR as depicted in the following diagram: 
+
+![Indexing options diagram for 24.0.0.0](/documentation/images/indexing-24000.png)
+
+You can now proceed to the following section: [2.2- Creating a FederatedSystem custom resource to reference your on-premise system](#22--creating-a-federatedsystem-custom-resource-to-reference-your-on-premise-system).
+
+<br/>
+
+#### 2.1.2- Business Automation Workflow 23.0.2 and older
+
+ If you followed the procedure from [1.2.2 - Enabling indexing on the on-premise Business Automation Workflow 23.0.2 and older](#122--business-automation-workflow-2302-and-older), then the Business Automation Workflow system is properly configured to be federated. You now have two options regarding how data will be indexed from the on-premise relational database to the Federated Data Repository (Elasticsearch/Opensearch):
 - Configure the Process Federation Server running on Openshift/Kubernetes to declare the federated system, a retriever, and also an indexer to index data from the on-premise database to the federated system into the Federated Data Repository already used by Process Federation Server running on Openshift/Kubernetes.
 - Configure a regular on-premise Process Federation Server deployment that will perform indexing from the on-premise database to the Federated Data Repository already used by Process Federation Server running on Openshift/Kubernetes. With this approach, the Process Federation Server running on Openshift/Kubernetes is not responsible for indexing data from the on-premise federated system and will only declare the federated system and a retriever to the on-premise federated system. This approach provides better performance if there is a network latency larger than 10ms between the on-premises site and Process Federation Server running on Openshift/Kubernetes.
 
-![Indexing options diagram](/documentation/images/indexing-options.png)
+![Indexing options diagram for 23.0.2 and older](/documentation/images/indexing-2302.png)
 
 <br/>
 <br/>
@@ -448,6 +490,7 @@ You can now create the **FederatedSystem** custom resource.
 Here is an example of a **FederatedSystem** custom resource that does not declare an indexer, assuming that indexing is performed by a Process Federation Server running on premisde that indexes in the same Elasticsearch cluster as the one used by the Process Federation Server running on Openshift/Kubernetes:
 
 ```
+cat << EOF |  oc apply -f -
 apiVersion: icp4a.ibm.com/v1
 kind: FederatedSystem
 metadata:
@@ -459,7 +502,7 @@ spec:
   certificates:
     secrets:
       - onprem-cert-secret
-    
+EOF
 ```
 
 The complete documentation of the **FederatedSystem** custom resource properties can be found in [Federated system parameters](https://www.ibm.com/docs/SSYHZ8_23.0.1/com.ibm.dba.install/op_topics/ref_fs_params.html).
@@ -469,6 +512,8 @@ The complete documentation of the **FederatedSystem** custom resource properties
 ##### 2.2.1.4- Enabling indexing
 
 If you plan to also have Process Federation Server running on Openshift/Kubernetes to perform the indexing of the on-premise Business Automation Workflow tasks and process instances into the Federated Data repository, you must add a section in the **FederatedSystem** custom resource specification to provide details related to the database used by the on-premise system.
+
+**Note: this procedure is not applicable when federating Business Automation Worklow 24.0.0.0. It may only apply to version 23.0.2 and older depending on the [option](#212--business-automation-workflow-2302-and-older) you chose.**
 
 The supported indexer datasources are:
 - DB2
@@ -537,6 +582,7 @@ Once this secret is created, you can create the **FederatedSystem** custom resou
 The following example shows a FederatedSystem custom resource that uses the advanced federation:
 
 ```
+cat << EOF |  oc apply -f -
 apiVersion: icp4a.ibm.com/v1
 kind: FederatedSystem
 metadata:
@@ -548,7 +594,7 @@ spec:
     secrets:
       - onprem-cert-secret
       - database-cert-secret
-    
+EOF
 ```
 
 <br/>
@@ -556,12 +602,59 @@ spec:
 
 #### 2.2.3- Mixing basic and advanced configurations
 
-It is possible to set up a **FederatedSystem** custom resource by following the [basic configuration](#221--basic-configuration) procedure - so that the Process Federation Server operator generates the [Liberty configuration dropin](https://www.ibm.com/docs/en/was-liberty/base?topic=files-using-configuration-dropins-folder-specify-server-configuration) that will declare the federated system - and also provide a secret referenced as `spec.advancedConfig` as described in [advanced configuration](#222--advanced-configuration). 
+It is possible to set up a **FederatedSystem** custom resource by following the [basic configuration](#221--basic-configuration) procedure - so that the Process Federation Server operator generates the [Liberty configuration dropin](https://www.ibm.com/docs/en/was-liberty/base?topic=files-using-configuration-dropins-folder-specify-server-configuration) that will declare the federated system - and also provide a secret referenced as `spec.advancedConfig` as described in [advanced configuration](#222--advanced-configuration) to override the default configuration or add new configuration tags like `<ibmPfs_launchableEntity>` as documented [here](https://www.ibm.com/docs/baw/23.x?topic=portal-dashboards-processes-services).
 
-This secret would contain [Liberty configuration dropins](https://www.ibm.com/docs/en/was-liberty/base?topic=files-using-configuration-dropins-folder-specify-server-configuration):
-- to declare new configuration tags like `<ibmPfs_launchableEntity>` as documented [here](https://www.ibm.com/docs/baw/23.x?topic=portal-dashboards-processes-services)
-- to override the configuration tags which are generated using the [Basic federation](#221--basic-federation) procedure. To achieve this, you must first copy-paste the content of the key from the secret with the same name as the **FederatedSystem** custom resource into a new key in the secret referenced as `spec.advancedConfig`, and then adapt it as needed to add or change the default configuration properties. For the generated configuration to be overridden by your custom configuration, you must take care that the key in the secret referenced as `spec.advancedConfig` is alphabetically greater than the key in the secret with the same name as the **FederatedSystem** custom resource. The `id` property of the generated configuration tags must remain unchanged.
+A relevant use-case is when the same process applications are deployed on the on-premise Business Automation Workflow (where there are on-going instances of these process applications) and on the container-based Workflow server (Business Automation Workflow or Workflow Process Service) and that you want new instances of these process applications to be only created on the container-based Workflow server and not on the on-premise system then you have to override the default `<ibmPfs_federatedSystem>` configuration of the on-premise Worfklow server to give it a lower priority:
 
+1. the first action to take is to first follow the [basic configuration](#221--basic-configuration) procedure. 
+
+2. once the system is federated with a default configuration you will search for the secret which contains the default configuration. This secret has the same name as the **FederatedSystem** custom resource. 
+
+3. in this secret you will find a single key which contains the Liberty configuration dropin which declares the federated system. From the key value, you must copy-paste the `<ibmPfs_federatedSystem>` configuration tag and re-use it in a new secret but add `launchListPriority="1001"` property. Setting `launchListPriority` to 1001 is a higher value than the default `launchListPriority` of the other federated systems which have a default value of 1000. A lower value for `launchListPriority` means a higher priority. This way, if the same process app is deployed on the on-premise system and on a Workflow server running on containers, and that both systems are available, then when a user will start a new instance of this process app, it will be always processed on the Workflow server running on containers. This secret can be created as follows:
+   ```
+   cat << EOF |  oc apply -f -
+   kind: Secret
+   apiVersion: v1
+   metadata:
+     name: onprem-baw-federatedsystem-adv
+     namespace: demo-project
+   type: Opaque
+   stringData:
+     zzz-on-prem-baw.xml: |
+       <server>
+        <ibmPfs_federatedSystem id="6b4d5b75-c1f0-4561-b85a-af8f299b6016" systemType="SYSTEM_TYPE_WLE"
+           indexName="6b4d5b75-c1f0-4561-b85a-af8f299b6016"
+           restUrlPrefix="https://onprem-host:9443/rest/bpm/wle" 
+           taskCompletionUrlPrefix="https://onprem-host:9443/teamworks"
+           allowedOrigins="*" 
+           authenticationMechanism="PFS_ACCESS_TOKEN"
+           indexProcessInstances="true"
+           launchListPriority="1001"
+         />
+       </server>
+   EOF
+   ```
+   Notice that the key starts with "zzz". This is because Liberty processes the configuration dropins in alphabetical order and we must ensure that the file name of the configuration dropin is alphabetically greater than the file name of the default configuration dropin to override it.
+
+4. Once the secret is created, you have to edit the **FederatedSystem** custom resource to reference the secret as `spec.advancedConfig`:
+   ```
+   cat << EOF |  oc apply -f -
+   apiVersion: icp4a.ibm.com/v1
+   kind: FederatedSystem
+   metadata:
+     name: onprem-baw-federatedsystem
+     namespace: demo-project
+   spec:
+     url: https://onprem-baw:9443/
+     credentialSecret: onprem-credential
+     certificates:
+       secrets:
+         - onprem-cert-secret
+     advancedConfig: onprem-baw-federatedsystem-adv
+   EOF
+   ```
+
+If you do not want to override the existing configuration but only want to add new configuration elements to it, like `<ibmPfs_launchableEntity>` as documented [here](https://www.ibm.com/docs/baw/23.x?topic=portal-dashboards-processes-services), you can directly create a config dropin which contains the `<ibmPfs_launchableEntity>` configuration tags, package it as a secret, and create a **FederatedSystem** custom resource like in the [basic configuration](#221--basic-configuration) procedure, but with the additional `spec.advancedConfig` parameter to reference the secret containing the configuration dropin containing the `<ibmPfs_launchableEntity>` elements.
 
 <br/>
 ---
@@ -576,7 +669,7 @@ In the response, verify that in the `federationResult` array, there is an item f
 For more details about how to access the Process Federation Server REST API, see [this documentation](/documentation/PFS-Statefulset.md#accessing-the-rest-api).
 
 <br/>
---- 
+---
 
 **Parent topic:** [Administering and operating IBM® Process Federation Server](../README.md)
 

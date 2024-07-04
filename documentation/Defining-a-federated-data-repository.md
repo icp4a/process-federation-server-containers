@@ -19,15 +19,15 @@ If you are installing a __stand-alone IBM Business Automation Workflow on contai
 
 If you are installing __IBM Cloud Pak for Business Automation__, the options for the federated data repository are:
 
-* __CPfs-ES:__ let the IBM Cloud Pak for Business Automation provision and use Elasticsearch provided by IBM® Cloud Pak Foundational Services (CPfs). This is the default option.
+* __CPfs-OS:__ let the IBM Cloud Pak for Business Automation provision and use Opensearch provided by IBM® Cloud Pak Foundational Services (CPfs). This is the default option.
 
 * __External-FDR:__ provide your own Elasticsearch or Opensearch cluster separately and reference it in the ProcessFederationServer Custom Resource. This option is only available if `spec.shared_configuration.sc_deployment_type` is set to "Production".
 
 > Note: The deployment type is determined by the spec.shared_configuration.sc_deployment_type property of the ICP4ACluster Custom Resource which can be set to either Starter or Production
 
-* **[Using Elasticsearch provided by IBM Cloud Pak foundational services](./Using-CPfs-Elasticsearch.md)**
+* **[Using Opensearch provided by IBM Cloud Pak foundational services](./Using-CPfs-Opensearch.md)**
 
-  When deploying the IBM Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use Elasticsearch provided by IBM Cloud Pak foundational services.
+  When deploying the IBM Cloud Pak for Business Automation, by default, the ICP4ACluster Custom Resource is configured to provision and use Opensearch provided by IBM Cloud Pak foundational services.
   
 * **[Deploying Opensearch as part of the stand-alone IBM Business Automation Workflow on containers deployment](./Using-standalone-BAW-Opensearch.md)**
 

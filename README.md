@@ -31,9 +31,9 @@ The Process Federation Server Operator also has a dependency on a Custom Resourc
 
     Process Federation Server uses a [remote federated data respository](https://www.ibm.com/docs/en/baw/23.x?topic=service-declaring-federated-data-repository-in-serverxml), implemented with an Elasticsearch or Opensearch cluster, to store data. The topics in this section provide detailed information about the different types of Elasticsearch or Opensearch clusters that can be used by PFS containers to implement the federated data repository, depending on the type of IBM Business Automation Workflow containers installation:
 
-    * **[Using an Elasticsearch cluster provided by IBM Cloud Pak foundational services](./documentation/Using-CPfs-Elasticsearch.md)**
+    * **[Using an Opensearch cluster provided by IBM Cloud Pak foundational services](./documentation/Using-CPfs-Opensearch.md)**
 
-      When deploying IBM Cloud Pak for Business Automation, an Elasticsearch cluster provided by IBM Cloud Pak foundational services is provisioned by default. This section provides information about using this type of Elasticsearch cluster as the Process Federation Server federated data repository.
+      When deploying IBM Cloud Pak for Business Automation, an Opensearch cluster provided by IBM Cloud Pak foundational services is provisioned by default. This section provides information about using this type of Opensearch cluster as the Process Federation Server federated data repository.
 
     * **[Deploying an Opensearch cluster as part of the stand-alone IBM Business Automation Workflow on containers deployment](./documentation/Using-standalone-BAW-Opensearch.md)**
 
