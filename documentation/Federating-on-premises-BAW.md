@@ -487,21 +487,7 @@ You must create an entry in this secret that contains a key that ends with ".xml
 
 You can refer to [Configuration properties for federated systems](https://www.ibm.com/docs/baw/23.x?topic=systems-configuration-properties-federated) for detailed information about the above configuration elements.
 
-When configuring the `<ibmPfs_federatedSystem>`, you must take care that the `restUrlPrefix` and `taskCompletionUrlPrefix` properties are referencing the Process Federation Server proxy API URLs to reach the on-premise system. Only the `internalRestUrlPrefix` property of the `<ibmPfs_bpdRetriever>` must reference the direct URL to the federated system.
-
-For example:
-```
-    <ibmPfs_federatedSystem id="on-prem-system-1"
-        restUrlPrefix="https://cpd-myworkspace.apps.myocp.cp.mycompany.com/pfs/rest/bpm/federated/v1/proxy/on-prem-system-1/rest/bpm/wle" 
-        taskCompletionUrlPrefix="https://cpd-myworkspace.apps.myocp.cp.mycompany.com/pfs/rest/bpm/federated/v1/proxy/on-prem-system-1/teamworks"
-        [...]
-    />
-    <ibmPfs_bpdRetriever id="on-prem-system-1-retriever"
-        federatedSystemRef="on-prem-system-1"
-        internalRestUrlPrefix="https://onprem-host:9443/rest/bpm/wle"
-        [...]
-    />
-```
+Note that instead of creating this configuration from scratch, the procedure of [mixing basic and advanced configurations](#223--mixing-basic-and-advanced-configurations) may be simpler and less error-prone.
 <br/>
 
 > **Note:**
