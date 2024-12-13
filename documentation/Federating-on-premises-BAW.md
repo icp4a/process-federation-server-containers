@@ -3,7 +3,7 @@
 You can configure IBM® Process Federation Server containers to federate on-premise IBM Business Automation Workflow or IBM Business Process Manager systems.
 
 ---
-> **Attention:** If the version of Process Federation Server you are using is 21.0.3 running on OpenShift with Platform UI service enabled, follow the procedure described in [this Technote](https://www.ibm.com/support/pages/node/6514469) instead of the one documented here.
+> **Attention:** If the version of Process Federation Server you are using is running on OpenShift with Platform UI service enabled, follow the procedure described in [this Technote](https://www.ibm.com/support/pages/node/6514469) instead of the one documented here.
 > 
 ---
 
