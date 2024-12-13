@@ -8,13 +8,13 @@ The configuration of each on-premise system requires the following steps:
     * [1.1.1- Configuring SSO when federating from a standalone Business Automation Workflow deployment on containers](#111--configuring-sso-when-federating-from-a-standalone-business-automation-workflow-deployment-on-containers)
     * [1.1.2- Configuring SSO when federating from IBM Cloud Pak for Business Automation](#112--configuring-sso-when-federating-from-ibm-cloud-pak-for-business-automation)
   * [1.2- Enabling indexing on the on-premise Business Automation Workflow system](#12--enabling-indexing-on-the-on-premise-business-automation-workflow-system)
-    * [1.2.1- Business Automation Workflow 24.0.0.0](#121--business-automation-workflow-24000)
+    * [1.2.1- Business Automation Workflow 24.0.0.0 and newer](#121--business-automation-workflow-24000-and-newer)
     * [1.2.2- Business Automation Workflow 23.0.2 and older](#122--business-automation-workflow-2302-and-older)
   * [1.3- Declaring Workplace as an allowed origin](#13--declaring-workplace-as-an-allowed-origin)
   * [1.4- Configuring the Content Security Policy on the on-premise system](#14--configuring-the-content-security-policy-on-the-on-premise-system)
 * [2- Configuring Process Federation Server to federate the on-premise Business Automation Workflow system](#2--configuring-process-federation-server-to-federate-the-on-premise-business-automation-workflow-system)
   * [2.1- Planning your federation](#21--planning-your-federation)
-    * [2.1.1- Business Automation Workflow 24.0.0.0](#211--business-automation-workflow-24000)
+    * [2.1.1- Business Automation Workflow 24.0.0.0 and newer](#211--business-automation-workflow-24000-and-newer)
     * [2.1.2- Business Automation Workflow 23.0.2 and older](#212--business-automation-workflow-2302-and-older)
   * [2.2- Creating a FederatedSystem custom resource to reference your on-premise system](#22--creating-a-federatedsystem-custom-resource-to-reference-your-on-premise-system)
     * [2.2.1- Basic configuration](#221--basic-configuration)
@@ -229,7 +229,7 @@ Once the interceptor configuration is applied and saved, restart the Business Au
 
 Process Federation Server enables process participants to see a consolidated list of BPD-related tasks and process instances from all Business Automation Workflow systems in the federated environment. It is required that the BPD tasks and process instances from the federated systems are all indexed into the federated data repository (Elasticsearch or Opensearch). Depending on the version of Business Automation Workflow that you are federating, the procedure to have the BPD data indexed into the federated data repository is different.
 
-#### 1.2.1- Business Automation Workflow 24.0.0.0
+#### 1.2.1- Business Automation Workflow 24.0.0.0 and newer
 
 Since 24.0.0.0, Business Automation Workflow can directly index the BPD tasks and process instances in the federated data repository (FDR). To achieve this, you must follow procedure documented in [Enabling the BPD indexing](https://www.ibm.com/docs/baw/24.x?topic=indexes-enabling-federated-data-repository-bpd-indexing).
 
@@ -417,11 +417,11 @@ Now that the Business Automation Workflow system is properly configured to be fe
 
 Whichever option, you also have to ensure that your OCP/Kubernetes cluster is configured to allow outbound communication from the Process Federation Server pods to the on-prem Business Automation Workflow. For more details, see the IBM Documentation section about [Configuring cluster security](https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/24.0.0?topic=security-configuring-cluster).
 
-#### 2.1.1- Business Automation Workflow 24.0.0.0
+#### 2.1.1- Business Automation Workflow 24.0.0.0 and newer
 
-Since 24.0.0.0, Business Automation Workflow can directly index the BPD tasks and process instances in the federated data repository (FDR). If you followed the procedure from [1.2.1 - Enabling indexing on the on-premise Business Automation Workflow 24.0.0.0](#121--business-automation-workflow-24000), then the Business Automation Workflow system is already indexing data into the FDR as depicted in the following diagram: 
+Since 24.0.0.0, Business Automation Workflow can directly index the BPD tasks and process instances in the federated data repository (FDR). If you followed the procedure from [1.2.1 - Enabling indexing on the on-premise Business Automation Workflow 24.0.0.0 and newer](#121--business-automation-workflow-24000-and-newer), then the Business Automation Workflow system is already indexing data into the FDR as depicted in the following diagram: 
 
-![Indexing options diagram for 24.0.0.0](/documentation/images/indexing-24000.png)
+![Indexing options diagram for 24.0.0.0 and newer](/documentation/images/indexing-24000.png)
 
 You can now proceed to the following section: [2.2- Creating a FederatedSystem custom resource to reference your on-premise system](#22--creating-a-federatedsystem-custom-resource-to-reference-your-on-premise-system).
 
@@ -513,7 +513,7 @@ The complete documentation of the **FederatedSystem** custom resource properties
 
 If you plan to also have Process Federation Server running on Openshift/Kubernetes to perform the indexing of the on-premise Business Automation Workflow tasks and process instances into the Federated Data repository, you must add a section in the **FederatedSystem** custom resource specification to provide details related to the database used by the on-premise system.
 
-**Note: this procedure is not applicable when federating Business Automation Worklow 24.0.0.0. It may only apply to version 23.0.2 and older depending on the [option](#212--business-automation-workflow-2302-and-older) you chose.**
+**Note: this procedure is not applicable when federating Business Automation Worklow 24.0.0.0 and newer. It may only apply to version 23.0.2 and older depending on the [option](#212--business-automation-workflow-2302-and-older) you chose.**
 
 The supported indexer datasources are:
 - DB2
