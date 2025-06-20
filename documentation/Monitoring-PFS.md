@@ -2,19 +2,19 @@
 
 You can monitor a running server to gather information, detect issues, and perform actions without having to restart the server.
 
-## Accessing the Process Federation Server MBeans
+## Accessing the IBM Process Federation Server MBeans
 
-[JMX Mbeans](https://www.ibm.com/docs/en/baw/23.x?topic=server-monitoring-administering-process-federation) are deployed with Process Federation Server to monitor and perform administrative tasks for Process Federation Server servers.
+[JMX Mbeans](https://www.ibm.com/docs/baw/25.0.0?topic=server-monitoring-administering-process-federation) are deployed with IBM Process Federation Server to monitor and perform administrative tasks for IBM Process Federation Server servers.
 
-The MBeans execution must be performed on a given pod. As a Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) is created to expose all the pods of the Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), if you have more than one replica in your Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), this [service](https://kubernetes.io/docs/concepts/services-networking/service/) cannot be used to access the MBeans. Instead, you must open a terminal on a Process Federation Server pod, and then access the MBean on `localhost`.
+The MBeans execution must be performed on a given pod. As a Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) is created to expose all the pods of the IBM Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), if you have more than one replica in your IBM Process Federation Server [statefulset](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/), this [service](https://kubernetes.io/docs/concepts/services-networking/service/) cannot be used to access the MBeans. Instead, you must open a terminal on an IBM Process Federation Server pod, and then access the MBean on `localhost`.
 
-You can open a terminal on a container running within a Process Federation Server pod from the Console UI of your Openshift cluster, or using CLI:
+You can open a terminal on a container running within an IBM Process Federation Server pod from the Console UI of your Openshift cluster, or using CLI:
 
 ```
 kubectl exec -it <cr-instance-name>-pfs-0 -- bash
 ```
 
-A pre requisite to access the MBeans is to have at least one user with the `administrator-role` authorization. [Specifying Process Federation Server user authorizations on Kubernetes](./Authorizations.md) provides detailed instructions on how to do that.
+A pre requisite to access the MBeans is to have at least one user with the `administrator-role` authorization. [Specifying IBM Process Federation Server user authorizations on Kubernetes](./Authorizations.md) provides detailed instructions on how to do that.
 
 You can then access the MBeans using Curl or using the admin scripts which are located in the `/opt/ibm/wlp/ibmProcessFederationServer/wlp-ext/adminScripts` directory on the running pod.
 
