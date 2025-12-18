@@ -1,6 +1,7 @@
 TERMS AND CONDITIONS FOR SEPARATELY LICENSED CODE
 
-IBM Cloud Pak for Business Automation 25.0.0
+IBM Business Automation Workflow Enterprise V25.0.1.0
+IBM Business Automation Workflow Enterprise for Non-Production Environment V25.0.1.0
 
 The IBM license agreement and any applicable information on the web
 download page for IBM products refers Licensee to this file for details
@@ -21,7 +22,7 @@ shipped with, the Program as Licensee installed it.
 The following are Separately Licensed Code:
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-NON-IBM-LICENSE INFORMATION FOR CP4BA
+NON-IBM-LICENSE INFORMATION FOR BAW
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -30,14 +31,9 @@ TABLE OF CONTENTS
 THIS NON-IBM-LICENSE FILE CONSISTS OF THE FOLLOWING SECTIONS:
 
 CC-BY-3.0
-GPL-2.0
-  - GPL-2.0-only
-  - GPL-2.0-or-later
-GPL-3.0
-  - GPL-3.0-only
-  - GPL-3.0-or-later
+CC-BY-4.0
 OFL-1.1
-RedHat UBI 8.1,9.4,9.5
+RedHat UBI-9.6
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -48,111 +44,22 @@ The Program includes some or all of the following works licensed under
 the Creative Commons.
 The url to the license is https://creativecommons.org/licenses/by/3.0/legalcode
 
-spdx-exceptions | No Copyright Found | https://registry.npmjs.org/spdx-exceptions/-/spdx-exceptions-2.5.0.tgz
+spdx-exceptions | Copyright © 2010-2015 Linux Foundation and its Contributors | https://registry.npmjs.org/spdx-exceptions/-/spdx-exceptions-2.5.0.tgz
 
 END OF CREATIVE COMMONS ATTRIBUTION 3.0 NON-IBM-LICENSE INFORMATION
 
 
-
-
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-GNU General Public License
+CREATIVE COMMONS ATTRIBUTION 4.0
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The Program includes some or all of the following works licensed under
+the Creative Commons.
+The url to the license is https://creativecommons.org/licenses/by/4.0/legalcode
 
-GNU GENERAL PUBLIC LICENSE, VERSION 2
+icomoon  | No Copyright Found | https://www.onlinewebfonts.com/download/0265b98b68ecf1b3d801b5df4dc155e7
 
-The Program includes some or all of the following licensed to you
-as Separately Licensed Code under the GNU General Public
-License. For copies of the source code for this software, 
-contact IBM Support (https://www.ibm.com/mysupport) identifying 
-the IBM product and the GPL-licensed program for which you are 
-requesting the source code.
-
-Culmus
-David CLM fonts
-Keyutils
-Levenshtein
-Linux Libertine
-framework-8.7.17.jar
-libcom_err2
-libswresample4
-libxkbcommon-x11-0
-Alpine Main OS
-Debian Main OS
-
-END OF GNU GENERAL PUBLIC LICENSE, VERSION 2 NON-IBM-LICENSE INFORMATION
-
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-GNU GENERAL PUBLIC LICENSE, VERSION 2
-
-The Program includes some or all of the following licensed to you
-as Separately Licensed Code under the GNU General Public
-License. For copies of the source code for this software, 
-contact IBM Support (https://www.ibm.com/mysupport) identifying 
-the IBM product and the GPL-licensed program for which you are 
-requesting the source code.
-
-collectd-api.jar
-python-Levenshtein
-syslog-ng
-
-END OF GNU GENERAL PUBLIC LICENSE, VERSION 2 NON-IBM-LICENSE INFORMATION
-
-
-
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-GNU General Public License
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-GNU GENERAL PUBLIC LICENSE, VERSION 3
-
-The Program includes some or all of the following licensed to you
-as Separately Licensed Code under the GNU General Public
-License. For copies of the source code for this software, 
-contact IBM Support (https://www.ibm.com/mysupport) identifying 
-the IBM product and the GPL-licensed program for which you are 
-requesting the source code.
-
-ansible-collections/community.general
-ansible-core
-envtpl
-python3-qt5
-Ubuntu Main OS
-
-END OF GNU GENERAL PUBLIC LICENSE, VERSION 3 NON-IBM-LICENSE INFORMATION
-
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-GNU GENERAL PUBLIC LICENSE, VERSION 3
-
-The Program includes some or all of the following licensed to you
-as Separately Licensed Code under the GNU General Public
-License. For copies of the source code for this software, 
-contact IBM Support (https://www.ibm.com/mysupport) identifying 
-the IBM product and the GPL-licensed program for which you are 
-requesting the source code.
-
-ansible-collections/ansible.netcommon
-ansible-collections/ansible.posix
-ansible-collections/ansible.utils
-ansible-collections/community.docker
-ansible-collections/community.kubernetes
-ansible-collections/community.library_inventory_filtering
-ansible_collections/community.crypto
-compat-libgfortran-48
-libavcodec-free
-libavformat-free-devel
-libswscale-free	
-
-END OF GNU GENERAL PUBLIC LICENSE, VERSION 3 NON-IBM-LICENSE INFORMATION
+END OF CREATIVE COMMONS ATTRIBUTION 4.0 NON-IBM-LICENSE INFORMATION
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -162,27 +69,18 @@ SIL Open Font License 1.1
 The Program includes some or all of the following that IBM obtained 
 under the SIL Open Font License 1.1: 
 
-Adobe Arabic fonts
-Alef fonts
-Amiri Fonts 
-Carlito fonts
-DavidLibre fonts
-Frank Ruehl CLM fonts
-Gentium Fonts 
+@ibm/plex
+@ibm/plex-mono
+@ibm/plex-sans
+@ibm/plex-sans-arabic
+@ibm/plex-sans-devanagari
+@ibm/plex-sans-hebrew
+@ibm/plex-sans-thai
+@ibm/plex-sans-thai-looped
+@ibm/plex-serif
 IBM Plex
-MiriamLibre fonts
-Noto Kufi Arabic-Bold
-Noto Sans Arabic fonts
-Noto Sans Lisu fonts
-NotoSerif
-Rubik fonts
-Scheherazade fonts
-adobe hebrew bold fonts
 font-awesome
-liberation-fonts
-notofonts/noto-fonts
-reem-kufi fonts
-
+fontawesome
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 
@@ -273,9 +171,24 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALING
 THE FONT SOFTWARE.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-REDHAT UNIVERSAL BASE IMAGE v8.1,9.4,9.5
+REDHAT UNIVERSAL BASE IMAGE v9.6
 
 RedHat UBI has been taken under EULA > https://www.redhat.com/licenses/eulas
+
+
+The Program maybe provided with third party software programs subject to their own license terms.  
+
+The license terms either accompany the third party software programs or, in some instances, maybe may be viewed at >
+
+https://access.redhat.com/containers/
+
+
+END OF NON-IBM-LICENSE INFORMATION
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Red Hat Enterprise Linux v9.7
+
+Red Hat Enterprise Linux has been taken under EULA > https://www.redhat.com/licenses/eulas
 
 
 The Program maybe provided with third party software programs subject to their own license terms.  
@@ -291,6 +204,6 @@ END OF NON-IBM-LICENSE INFORMATION
 END OF NON-IBM-LICENSE INFORMATION FILE
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-L/N: L-LDYZ-7V4YJ4
-D/N: L-LDYZ-7V4YJ4
-P/N: L-LDYZ-7V4YJ4
+L/N: L-BKWX-VWBQKW
+D/N: L-BKWX-VWBQKW
+P/N: L-BKWX-VWBQKW
