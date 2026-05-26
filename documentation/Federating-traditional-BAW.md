@@ -665,7 +665,7 @@ A relevant use-case is when the same process applications are deployed on the tr
            restUrlPrefix="https://onprem-host:9443/rest/bpm/wle" 
            taskCompletionUrlPrefix="https://onprem-host:9443/teamworks"
            allowedOrigins="*" 
-           authenticationMechanism="IBM Process Federation Server_ACCESS_TOKEN"
+           authenticationMechanism="PFS_ACCESS_TOKEN"
            indexProcessInstances="true"
            launchListPriority="1001"
          />
